@@ -1,5 +1,5 @@
-namespace DIVerify {
+﻿namespace DIVerify {
     public interface IVerificationBuilder {
-        IVerification Build();
+        IVerificationBuilder WithFailureMessage(string failureMessage);
     }
 }

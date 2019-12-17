@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DIVerify
@@ -13,13 +13,13 @@ namespace DIVerify
 
         #region Public Methods
 
-        public VerificationResult Verify(IServiceCollection services, string? failureMessage = null) {
+        public VerificationResult Verify(IServiceCollection services, string failureMessage) {
             if (ServiceVerification is null) {
                 throw new InvalidOperationException("No verification defined");
             }
             return ServiceVerification(services)
                 ? VerificationResult.Successful
-                : VerificationResult.Failure(failureMessage ?? "TODO: What should the default message be");
+                : VerificationResult.Failure(failureMessage);
         }
 
         #endregion

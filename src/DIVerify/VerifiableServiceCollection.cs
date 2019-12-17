@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace DIVerify {
         #region Private Members
             
         private readonly List<ServiceDescriptor> _services = new List<ServiceDescriptor>();
-        private List<(IVerificationBuilder builder, string? failureMessage)> _builders = new List<(IVerificationBuilder, string?)>();
+        private readonly List<VerificationBuilderBase> _builders = new List<VerificationBuilderBase>();
 
         #endregion
 
@@ -52,20 +52,23 @@ namespace DIVerify {
         #endregion
 
         #region Public Methods
+
+        public IRegistrationVerificationBuilder Expect<T>() where T : class
+            => Expect(typeof(T));
             
-        public IRegistrationVerificationBuilder Expect(Type typeToVerify, string? failureMessage = null) {
+        public IRegistrationVerificationBuilder Expect(Type typeToVerify) {
             var factory = new VerificationBuilderFactory(typeToVerify);
-            factory.Callback(builder => _builders.Add((builder, failureMessage)));
+            factory.Callback(builder => _builders.Add(builder));
 
             return factory;
         }
 
-        public void Verify() {
-            var results = _builders.Select(b => b.builder.Build().Verify(this, b.failureMessage));
+        public void VerifyExpecations() {
+            var results = _builders.Select(b => b.Build().Verify(this, b.FailureMessage ?? b.DefaultMessage));
             var failed = results.Where(r => !r.Success);
             if (failed.Any()) {
                 throw new ServiceVerificationException(
-                    $"Verification failed with {failed.Count()} failures:" + Environment.NewLine +
+                    $"Verification failed with {failed.Count()} failure{(failed.Count() == 1 ? "" : "s")}:" + Environment.NewLine +
                     failed.Select(f => f.FailureMessage)
                         .Aggregate((left, right) => left + Environment.NewLine + right) 
                     ?? "No details provided"

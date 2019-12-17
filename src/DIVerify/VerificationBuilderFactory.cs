@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace DIVerify {
     public class VerificationBuilderFactory : IRegistrationVerificationBuilder {
@@ -6,7 +6,7 @@ namespace DIVerify {
         #region Private Members
 
         private readonly Type _typeToVerify;
-        private Action<IVerificationBuilder>? _callbackMethod;    
+        private Action<VerificationBuilderBase>? _callbackMethod;    
             
         #endregion
 
@@ -34,7 +34,7 @@ namespace DIVerify {
             return builder;
         }
 
-        public void Callback(Action<IVerificationBuilder> callbackMethod) => _callbackMethod = callbackMethod;
+        public void Callback(Action<VerificationBuilderBase> callbackMethod) => _callbackMethod = callbackMethod;
 
         #endregion
     }

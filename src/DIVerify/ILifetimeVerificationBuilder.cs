@@ -1,11 +1,11 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace DIVerify {
-    public interface ILifetimeVerificationBuilder {
+    public interface ILifetimeVerificationBuilder : IVerificationBuilder {
         ICountVerificationBuilder WithLifetime(ServiceLifetime lifetime);
     }
 
-    public interface INegatedLifetimeVerificationBuilder {
+    public interface INegatedLifetimeVerificationBuilder : IVerificationBuilder {
         IVerificationBuilder WithLifetime(ServiceLifetime lifetime);
     }
 }

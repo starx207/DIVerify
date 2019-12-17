@@ -1,5 +1,5 @@
-namespace DIVerify {
-    public interface ICountVerificationBuilder {
+﻿namespace DIVerify {
+    public interface ICountVerificationBuilder : IVerificationBuilder {
         ILifetimeVerificationBuilder AtLeast(int minimumRegistrations);
         ILifetimeVerificationBuilder AtLeastOnce() => AtLeast(1);
         ILifetimeVerificationBuilder AtMost(int maximumRegistrations);
